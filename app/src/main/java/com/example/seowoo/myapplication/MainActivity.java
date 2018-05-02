@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -187,5 +188,20 @@ public class MainActivity extends AppCompatActivity {
             }
             noticeListView.setAdapter(adapter);
         }
+    }
+
+    //메인액티비티 부분에서 두번 뒤로가기버튼을 누르면 어플리케이션 종료되도록 한다...?
+    private long lastTimeBackPressed;
+
+    //뒤로가기버튼을 누른후 1.5초 이내에 한번더 뒤로가기 버튼을 눌렀을 경우에 실행되는 메소드..
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() - lastTimeBackPressed < 1500)
+        {
+            finish();
+            return;
+        }
+        Toast.makeText(this, "'뒤로' 버튼을 한 번 더 눌러 종료합니다.", Toast.LENGTH_SHORT).show();
+        lastTimeBackPressed = System.currentTimeMillis();
     }
 }
