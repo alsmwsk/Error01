@@ -173,10 +173,6 @@ public class MainActivity extends AppCompatActivity {
                     noticeList.add(notice);
                     //adapter.notifyDataSetChanged();
 
-//                    Log.i("NoticeContent= ",noticeContent);
-//                    Log.i("NoticeName= ",noticeName);
-//                    Log.i("NoticeDate= ",noticeDate);
-
 
                     count++;
 

@@ -35,9 +35,7 @@
     </string-array>
 
     <string-array name="graduateArea">
-        <item>교육학공통</item>
-        <item>선수</item>
-        <item>전공</item>
+        <item>일반대학원</item>
     </string-array>
 
     <string-array name="universityArea">
@@ -45,4 +43,73 @@
         <item>전공</item>
     </string-array>
 
+    <string-array name="graduateMajor">
+        <item>교육학공통</item>
+        <item>교육학과</item>
+        <item>교육행정</item>
+        <item>교육철학및교육사</item>
+        <item>교육심리</item>
+        <item>교육사회</item>
+        <item>교육공학</item>
+        <item>상담심리</item>
+        <item>특수교육</item>
+        <item>초등교육</item>
+        <item>유아교육</item>
+        <item>국어교육학과</item>
+        <item>초등국어교육</item>
+        <item>국어교육</item>
+        <item>한문교육</item>
+        <item>한국어교육</item>
+        <item>영어교육학과</item>
+        <item>초등영어교육</item>
+        <item>독어교육</item>
+        <item>불어교육</item>
+        <item>중국어교육</item>
+        <item>윤리교육학과</item>
+
+    </string-array>
+
+    <string-array name="universityRefinementMajor">
+        <item>군사학</item>
+        <item>교직이론</item>
+        <item>교직소양</item>
+        <item>청람비전</item>
+        <item>청랑중점(리더십)</item>
+        <item>청랑중점(인성)</item>
+        <item>청랑중점(국제화)</item>
+        <item>청랑일반(역사와문화)</item>
+        <item>청랑일반(스포츠와예술)</item>
+        <item>청랑일반(과학과기술)</item>
+        <item>청랑일반(수리와정보)</item>
+        <item>청랑일반(교육기반이해)</item>
+    </string-array>
+
+    <string-array name="universityMajor">
+        <item>유아교육과</item>
+        <item>초등교육과</item>
+        <item>교육학과</item>
+        <item>국어교육과</item>
+        <item>영어교육과</item>
+        <item>독어교육과</item>
+        <item>불어교육과</item>
+        <item>중국어교육과</item>
+        <item>윤리교육과</item>
+        <item>일반사회교육과</item>
+        <item>지리교육과</item>
+        <item>역사교육과</item>
+        <item>공통사회교육과</item>
+        <item>수학교육과</item>
+        <item>물리교육과</item>
+        <item>화학교육과</item>
+        <item>생물교육과</item>
+        <item>지구과학교육과</item>
+        <item>가정교육과</item>
+        <item>컴퓨터교육과</item>
+        <item>기술교육과</item>
+        <item>환경교육과</item>
+        <item>공통과학교육전공</item>
+        <item>음악교육과</item>
+        <item>미술교육과</item>
+        <item>체육교육과</item>
+    </string-array>
 </resources>
