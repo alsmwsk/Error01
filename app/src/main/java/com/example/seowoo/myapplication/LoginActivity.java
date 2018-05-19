@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onDismiss(DialogInterface dialogInterface) {
                                                 //해석이 잘 안된다.
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                intent.putExtra("userID","userID");
+                                                intent.putExtra("userID",userID);
                                                 LoginActivity.this.startActivity(intent);
                                             }
                                         })
