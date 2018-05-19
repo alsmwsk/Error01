@@ -1,5 +1,6 @@
 package com.example.seowoo.myapplication;
 
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -36,12 +37,17 @@ public class MainActivity extends AppCompatActivity {
     private ListView noticeListView;
     private NoticeListAdapter adapter;
     private List<Notice> noticeList;
+    public static String userID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //화면을 세로로 고정
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        userID = getIntent().getStringExtra("userID");
 
         noticeListView = (ListView)findViewById(R.id.noticeListView);
         noticeList = new ArrayList<Notice>();

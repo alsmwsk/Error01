@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userID = idText.getText().toString();
+                final String userID = idText.getText().toString();
                 String userPassword = passwordText.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onDismiss(DialogInterface dialogInterface) {
                                                 //해석이 잘 안된다.
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                intent.putExtra("userID","userID");
                                                 LoginActivity.this.startActivity(intent);
                                             }
                                         })
