@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -58,6 +59,43 @@ public class ScheduleFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    //0교시부터 13교시
+    private TextView monday[] = new TextView[14];
+    private TextView tuesday[] = new TextView[14];
+    private TextView wednesday[] = new TextView[14];
+    private TextView thursday[] = new TextView[14];
+    private TextView friday[] = new TextView[14];
+    private Schedule schedule = new Schedule();
+
+    //프래그먼트가 생성될때 실행되는 함수
+    //반복문을 사용하여 처리할수는 없는지 고민해봐야될거같다..
+    @Override
+    public void onActivityCreated(Bundle b)
+    {
+        super.onActivityCreated(b);
+
+        for (int i = 0; i < 14; i++)
+        {
+            int getIDm = getResources().getIdentifier("monday"+i,"id","com.example.seowoo.myapplication");
+            int getIDtu = getResources().getIdentifier("tuesday"+i,"id","com.example.seowoo.myapplication");
+            int getIDwe = getResources().getIdentifier("wednesday"+i,"id","com.example.seowoo.myapplication");
+            int getIDth = getResources().getIdentifier("thursday"+i,"id","com.example.seowoo.myapplication");
+            int getIDf = getResources().getIdentifier("friday"+i,"id","com.example.seowoo.myapplication");
+
+            monday[i] = (TextView)getView().findViewById(getIDm);
+            tuesday[i] = (TextView)getView().findViewById(getIDtu);
+            wednesday[i] = (TextView)getView().findViewById(getIDwe);
+            thursday[i] = (TextView)getView().findViewById(getIDth);
+            friday[i] = (TextView)getView().findViewById(getIDf);
+        }
+//        monday[0] = (TextView)getView().findViewById(R.id.tu0);
+//        monday[0] = (TextView)getView().findViewById(R.id.monday0);
+//        monday[0] = (TextView)getView().findViewById(R.id.monday0);
+//        monday[0] = (TextView)getView().findViewById(R.id.monday0);
+//        monday[0] = (TextView)getView().findViewById(R.id.monday0);
+
     }
 
     @Override
