@@ -160,7 +160,7 @@ public class Schedule {
         }
         else
         {
-            professor = "(" + courseProfessor + ")";
+            professor = "";
         }
         int temp;
 
@@ -286,8 +286,45 @@ public class Schedule {
     }
 
     //context는 자신을 불러낸 context가 담기는 공간
-    public void setting(TextView[] monday, TextView[] tuesday, TextView[] wednesday, TextView[] thursday, TextView[] friday, Context context)
+    //모든 텍스트뷰중에서 가장 긴 텍스트뷰를 골라서 그것을 적용한다?
+    public void setting(AutoResizeTextView[] monday, AutoResizeTextView[] tuesday, AutoResizeTextView[] wednesday, AutoResizeTextView[] thursday, AutoResizeTextView[] friday, Context context)
     {
+
+        int maxLength = 0;
+        String maxString = "";
+
+        for (int i = 0; i < 14; i++)
+        {
+            if(this.monday[i].length() > maxLength)
+            {
+                maxLength = this.monday[i].length();
+                maxString = this.monday[i];
+            }
+
+            if(this.tuesday[i].length() > maxLength)
+            {
+                maxLength = this.tuesday[i].length();
+                maxString = this.tuesday[i];
+            }
+
+            if(this.wednesday[i].length() > maxLength)
+            {
+                maxLength = this.wednesday[i].length();
+                maxString = this.wednesday[i];
+            }
+
+            if(this.thursday[i].length() > maxLength)
+            {
+                maxLength = this.thursday[i].length();
+                maxString = this.thursday[i];
+            }
+
+            if(this.friday[i].length() > maxLength)
+            {
+                maxLength = this.friday[i].length();
+                maxString = this.friday[i];
+            }
+        }
 
         for(int i = 0; i < 14; i++)
         {
@@ -296,7 +333,12 @@ public class Schedule {
             {
                 monday[i].setText(this.monday[i]);
                 // 해당 강의가 존재할떄 컬러 색상이 바뀐다.
-                monday[i].setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                monday[i].setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            }
+            else
+            {
+                //적절한 크기를 가지게할려고한다..?
+                monday[i].setText(maxString);
             }
 
             //특정한 강의가 해당 시간에 이미 들어가 있다면
@@ -304,7 +346,11 @@ public class Schedule {
             {
                 tuesday[i].setText(this.tuesday[i]);
                 // 해당 강의가 존재할떄 컬러 색상이 바뀐다.
-                tuesday[i].setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                tuesday[i].setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));            }
+            else
+            {
+                //적절한 크기를 가지게할려고한다..?
+                tuesday[i].setText(maxString);
             }
 
             //특정한 강의가 해당 시간에 이미 들어가 있다면
@@ -312,7 +358,12 @@ public class Schedule {
             {
                 wednesday[i].setText(this.wednesday[i]);
                 // 해당 강의가 존재할떄 컬러 색상이 바뀐다.
-                wednesday[i].setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                wednesday[i].setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            }
+            else
+            {
+                //적절한 크기를 가지게할려고한다..?
+                wednesday[i].setText(maxString);
             }
 
             //특정한 강의가 해당 시간에 이미 들어가 있다면
@@ -320,7 +371,13 @@ public class Schedule {
             {
                 thursday[i].setText(this.thursday[i]);
                 // 해당 강의가 존재할떄 컬러 색상이 바뀐다.
-                thursday[i].setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                thursday[i].setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            }
+            else {
+
+                    //적절한 크기를 가지게할려고한다..?
+                    thursday[i].setText(maxString);
+
             }
 
             //특정한 강의가 해당 시간에 이미 들어가 있다면
@@ -328,8 +385,21 @@ public class Schedule {
             {
                 friday[i].setText(this.monday[i]);
                 // 해당 강의가 존재할떄 컬러 색상이 바뀐다.
-                friday[i].setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                friday[i].setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
             }
+            else {
+
+                //적절한 크기를 가지게할려고한다..?
+                friday[i].setText(maxString);
+
+            }
+
+            //텍스트 사이즈 크기에 맞게 조정하기
+            monday[i].resizeText();
+            tuesday[i].resizeText();
+            wednesday[i].resizeText();
+            thursday[i].resizeText();
+            friday[i].resizeText();
         }
     }
 

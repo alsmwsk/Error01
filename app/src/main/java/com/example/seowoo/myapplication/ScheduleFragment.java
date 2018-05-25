@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -30,10 +32,12 @@ import java.net.URLEncoder;
  * create an instance of this fragment.
  */
 public class ScheduleFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,12 +77,14 @@ public class ScheduleFragment extends Fragment {
     }
 
     //0교시부터 13교시
-    private TextView monday[] = new TextView[14];
-    private TextView tuesday[] = new TextView[14];
-    private TextView wednesday[] = new TextView[14];
-    private TextView thursday[] = new TextView[14];
-    private TextView friday[] = new TextView[14];
+    private AutoResizeTextView monday[] = new AutoResizeTextView[14];
+    private AutoResizeTextView tuesday[] = new AutoResizeTextView[14];
+    private AutoResizeTextView wednesday[] = new AutoResizeTextView[14];
+    private AutoResizeTextView thursday[] = new AutoResizeTextView[14];
+    private AutoResizeTextView friday[] = new AutoResizeTextView[14];
     private Schedule schedule = new Schedule();
+
+
 
     //프래그먼트가 생성될때 실행되는 함수
     //반복문을 사용하여 처리할수는 없는지 고민해봐야될거같다..
@@ -95,12 +101,20 @@ public class ScheduleFragment extends Fragment {
             int getIDth = getResources().getIdentifier("thursday"+i,"id","com.example.seowoo.myapplication");
             int getIDf = getResources().getIdentifier("friday"+i,"id","com.example.seowoo.myapplication");
 
-            monday[i] = (TextView)getView().findViewById(getIDm);
-            tuesday[i] = (TextView)getView().findViewById(getIDtu);
-            wednesday[i] = (TextView)getView().findViewById(getIDwe);
-            thursday[i] = (TextView)getView().findViewById(getIDth);
-            friday[i] = (TextView)getView().findViewById(getIDf);
+            monday[i] = (AutoResizeTextView)getView().findViewById(getIDm);
+            tuesday[i] = (AutoResizeTextView)getView().findViewById(getIDtu);
+            wednesday[i] = (AutoResizeTextView)getView().findViewById(getIDwe);
+            thursday[i] = (AutoResizeTextView)getView().findViewById(getIDth);
+            friday[i] = (AutoResizeTextView)getView().findViewById(getIDf);
         }
+
+//        Button parsing = (Button)getView().findViewById(R.id.parsing);
+//        parsing.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new BackgroundTask().execute();
+//            }
+//        });
 
         new BackgroundTask().execute();
 //        monday[0] = (TextView)getView().findViewById(R.id.tu0);
@@ -111,10 +125,12 @@ public class ScheduleFragment extends Fragment {
 
     }
 
+    //메인쓰레드는 ui를 못건드리고 별도의 쓰레드를 이용한다?
     class BackgroundTask extends AsyncTask<Void, Void, String>
     {
         String targert;
 
+        //실행하기 전에 사용되는 메소드
         @Override
         protected void onPreExecute() {
 
@@ -155,12 +171,14 @@ public class ScheduleFragment extends Fragment {
             return null;
         }
 
+        //데이터가 만개 있는데 중간에 한번 실행되는 메소드
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         }
 
         //해당 결과를 처리 할 수 있는 메소드..
+        //데이터를 전부 다 받아온 후에 실행되는 메소드
         @Override
         protected void onPostExecute(String result) {
 
