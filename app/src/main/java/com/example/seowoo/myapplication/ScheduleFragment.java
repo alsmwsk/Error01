@@ -1,5 +1,6 @@
 package com.example.seowoo.myapplication;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -129,6 +130,8 @@ public class ScheduleFragment extends Fragment {
     class BackgroundTask extends AsyncTask<Void, Void, String>
     {
         String targert;
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+
 
         //실행하기 전에 사용되는 메소드
         @Override
@@ -136,6 +139,8 @@ public class ScheduleFragment extends Fragment {
 
             try{
                 targert = "http://alsmwsk3.dothome.co.kr/Android/ScheduleList.php?userID=" + URLEncoder.encode(MainActivity.userID,"UTF-8");
+                dialog.setMessage("로딩중");
+                dialog.show();
             }catch (Exception e)
             {
                 e.printStackTrace();
@@ -206,6 +211,8 @@ public class ScheduleFragment extends Fragment {
                     count++;
 
                 }
+
+                dialog.dismiss();
 
             }catch (Exception e){
                 e.printStackTrace();;
