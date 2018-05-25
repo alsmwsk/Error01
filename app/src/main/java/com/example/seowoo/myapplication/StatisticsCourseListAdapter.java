@@ -86,6 +86,7 @@ public class StatisticsCourseListAdapter extends BaseAdapter {
         }
         else{
             coursePersonnel.setText("신청 인원 : " + courseList.get(i).getCourseRival() + " / " + courseList.get(i).getCoursePersonnel());
+
             int rate = ((int) (((double)courseList.get(i).getCourseRival() * 100 / courseList.get(i).getCoursePersonnel()) + 0.5));
             courseRate.setText("경쟁률 : " + rate + "%");
             if(rate < 20)

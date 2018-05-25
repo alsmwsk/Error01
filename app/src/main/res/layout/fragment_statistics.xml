@@ -48,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="데이터 파싱"
-            android:id="@+id/parsing"/>
+            android:id="@+id/parsing"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
