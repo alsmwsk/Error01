@@ -40,6 +40,7 @@ public class CourseListAdapter extends BaseAdapter {
     //해당 서버프로그램을 이용해서 시간표가 중복되는지 체크
     private Schedule schedule = new Schedule();
     private List<Integer> courseIDList;
+    public static int totalCredit = 0;
 
     public CourseListAdapter(Context context, List<Course> courseList, android.support.v4.app.Fragment parent) {
         this.context = context;
@@ -47,6 +48,7 @@ public class CourseListAdapter extends BaseAdapter {
         this.parent = parent;
         schedule = new Schedule();
         courseIDList = new ArrayList<Integer>();
+        totalCredit = 0;
 
         new BackgroundTask().execute();
     }
@@ -126,6 +128,15 @@ public class CourseListAdapter extends BaseAdapter {
 
                     dialog.show();
                 }
+                else if(totalCredit + courseList.get(i).getCourseCredit() > 24)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(parent.getActivity());
+                    AlertDialog dialog = builder.setMessage("24학점을 초과할 수 없습니다.")
+                            .setPositiveButton("다시 시도", null)
+                            .create();
+
+                    dialog.show();
+                }
                 else if(validate == false)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(parent.getActivity());
@@ -156,6 +167,7 @@ public class CourseListAdapter extends BaseAdapter {
                                     //강의 추가
                                     courseIDList.add(courseList.get(i).getCourseID());
                                     schedule.addSchedule(courseList.get(i).getCourseTime());
+                                    totalCredit += courseList.get(i).getCourseCredit();
                                     //finish();
                                 }else{
                                     AlertDialog.Builder builder = new AlertDialog.Builder(parent.getActivity());
@@ -239,8 +251,8 @@ public class CourseListAdapter extends BaseAdapter {
         @Override
         protected void onPostExecute(String result) {
 
-
             try {
+                totalCredit = 0;
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
                 int count = 0;
@@ -253,6 +265,7 @@ public class CourseListAdapter extends BaseAdapter {
                     courseID = object.getInt("courseID");
                     courseProfessor = object.getString("courseProfessor");
                     courseTime = object.getString("courseTime");
+                    totalCredit += object.getInt("courseCredit");
                     courseIDList.add(courseID);
                     schedule.addSchedule(courseTime);
                     //adapter.notifyDataSetChanged();

@@ -85,9 +85,8 @@
                 android:id="@+id/courseRate"
                 android:layout_gravity="center"
                 android:padding="3dp"
-                android:textColor="@color/colorDanger"
-                android:textColorHint="#ffffff"/>
-
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"/>
 
 
         </LinearLayout>

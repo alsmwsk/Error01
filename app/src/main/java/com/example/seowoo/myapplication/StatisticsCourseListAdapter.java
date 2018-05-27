@@ -3,17 +3,20 @@ package com.example.seowoo.myapplication;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -68,7 +71,7 @@ public class StatisticsCourseListAdapter extends BaseAdapter {
         TextView courseDivide = (TextView)v.findViewById(R.id.courseDivide);
         TextView coursePersonnel = (TextView)v.findViewById(R.id.coursePersonnel);
         TextView courseRate = (TextView)v.findViewById(R.id.courseRate);
-
+        Button deleteButton = (Button)v.findViewById(R.id.deleteButton);
 
         if(courseList.get(i).getCourseGrade().equals("제한 없음") || courseList.get(i).getCourseGrade().equals(""))
         {
@@ -112,6 +115,59 @@ public class StatisticsCourseListAdapter extends BaseAdapter {
         }
 
         v.setTag(courseList.get(i).getCourseID()); //이게 뭘까..
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try
+                        {
+                            Log.i("Response : ", response);
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if(success){
+                                //자신을 불러낸 courseFragment에서 알림창을 띄울수 있도록한다.
+                                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getActivity());
+                                AlertDialog dialog = builder.setMessage("강의가 삭제되었습니다.")
+                                        .setPositiveButton("확인", null)
+                                        .create();
+
+                                dialog.show();
+                                //학점 변경
+                                StatisticsFragment.totalCredit -= courseList.get(i).getCourseCredit();
+                                StatisticsFragment.credit.setText(StatisticsFragment.totalCredit + "학점");
+                                courseList.remove(i);
+                                notifyDataSetChanged();
+                                //finish();
+                            }else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getActivity());
+                                AlertDialog dialog = builder.setMessage("강의 삭제에 실패하였습니다.")
+                                        .setNegativeButton("다시 시도", null)
+                                        .create();
+
+                                dialog.show();
+                            }
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                            //Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,"Error: " + response, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                };
+                //이거 뭐하는건지 모르겠음..
+                //어떤 회원이 어떤 강의를 듣는다는 그런 스케쥴 데이터를 스케쥴 데이터베이스에 넣어야하기 떄문에
+                DeleteRequest deleteRequest = new DeleteRequest(userID, courseList.get(i).getCourseID()+"",responseListener);
+                RequestQueue queue = Volley.newRequestQueue(parent.getActivity());
+                queue.add(deleteRequest);
+
+            }
+        });
         return v;
 
     }

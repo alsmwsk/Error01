@@ -82,7 +82,8 @@ public class StatisticsFragment extends Fragment {
     private ListView courseListView;
     private StatisticsCourseListAdapter adapter;
     private List<Course> courseList;
-    int totalCredit = 0; // 해당학생이 신청한 총학점수
+    public static int totalCredit = 0; // 해당학생이 신청한 총학점수
+    public static TextView credit;
 
     //해당 액티비티를 불러왔을떄 실행되는 메소드.
     @Override
@@ -102,6 +103,8 @@ public class StatisticsFragment extends Fragment {
 //            }
 //        });
         new BackgroundTask().execute();
+        totalCredit = 0;
+        credit = (TextView)getView().findViewById(R.id.totalCredit);
     }
 
     //메인쓰레드는 ui를 못건드리고 별도의 쓰레드를 이용한다?
@@ -191,8 +194,9 @@ public class StatisticsFragment extends Fragment {
                     coursePersonnel = object.getInt("coursePersonnel");
 //                    courseRival = object.getInt("courseRival");
                     courseRival = object.getInt("COUNT(SCHEDULE.courseID)");
-                    totalCredit += object.getInt("courseCredit");
-                    courseList.add(new Course(courseID, courseTitle, courseDivide, courseGrade, coursePersonnel, courseRival));
+                    int courseCredit = object.getInt("courseCredit");
+                    totalCredit += courseCredit;
+                    courseList.add(new Course(courseID, courseTitle, courseDivide, courseGrade, coursePersonnel, courseRival,courseCredit));
 
                     //adapter.notifyDataSetChanged();
                     count++;
@@ -211,7 +215,6 @@ public class StatisticsFragment extends Fragment {
 
 
                 adapter.notifyDataSetChanged();
-                TextView credit = (TextView)getView().findViewById(R.id.totalCredit);
                 credit.setText(totalCredit + "학점");
 
             }catch (Exception e){
