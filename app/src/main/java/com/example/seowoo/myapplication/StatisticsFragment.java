@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -85,6 +88,13 @@ public class StatisticsFragment extends Fragment {
     public static int totalCredit = 0; // 해당학생이 신청한 총학점수
     public static TextView credit;
 
+    private ArrayAdapter rankAdapter;
+    private Spinner rankSpinner;
+
+    private ListView rankListView;
+    private RankListAdapter rankListAdapter;
+    private List<Course> rankList;
+
     //해당 액티비티를 불러왔을떄 실행되는 메소드.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -93,6 +103,51 @@ public class StatisticsFragment extends Fragment {
         courseList = new ArrayList<Course>();
         adapter = new StatisticsCourseListAdapter(getContext().getApplicationContext(),courseList,this);
         courseListView.setAdapter(adapter);
+        rankSpinner = (Spinner)getView().findViewById(R.id.rankSpinner);
+        rankAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.rank, R.layout.spinner_item);
+        rankSpinner.setAdapter(rankAdapter);
+        rankSpinner.setPopupBackgroundResource(R.color.colorPrimary); // 아이템에 색깔 적용
+        rankListView = (ListView)getView().findViewById(R.id.rankListView);
+        rankList = new ArrayList<Course>();
+        rankListAdapter = new RankListAdapter(getContext().getApplicationContext(), rankList, this);
+        rankListView.setAdapter(rankListAdapter);
+
+
+
+        rankSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (rankSpinner.getSelectedItem().equals("전체에서"))
+                {
+                    new ByEntire().execute(); //전체에서 강의순위 불러오기
+                }
+                else if(rankSpinner.getSelectedItem().equals("우리과에서"))
+                {
+
+                }
+                else if(rankSpinner.getSelectedItem().equals("남자 선호도"))
+                {
+
+                }
+                else if(rankSpinner.getSelectedItem().equals("여자 선호도"))
+                {
+
+                }
+                else if(rankSpinner.getSelectedItem().equals("전공 인기도"))
+                {
+
+                }
+                else if(rankSpinner.getSelectedItem().equals("교양 인기도"))
+                {
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 //        오류 검출용 코드
 //        Button parsing = (Button)getView().findViewById(R.id.parsing);
@@ -105,6 +160,124 @@ public class StatisticsFragment extends Fragment {
         new BackgroundTask().execute();
         totalCredit = 0;
         credit = (TextView)getView().findViewById(R.id.totalCredit);
+    }
+
+    //메인쓰레드는 ui를 못건드리고 별도의 쓰레드를 이용한다?
+    class ByEntire extends AsyncTask<Void, Void, String>
+    {
+        String targert;
+
+        //실행하기 전에 사용되는 메소드
+        @Override
+        protected void onPreExecute() {
+
+            try{
+                targert = "http://alsmwsk3.dothome.co.kr/Android/ByEntire.php";
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        //좀 많이 어려움
+        @Override
+        protected String doInBackground(Void... voids) {
+            try{
+                URL url = new URL(targert);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                //넘어오는 결과값을 저장할수 있도록 하는 메소드..
+                InputStream inputStream = httpURLConnection.getInputStream();
+                //해당 InputStream에 있는 값을 읽을 수 있도록 하기 위한 것
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+
+                //bufferedReader로 읽어온 값을 temp에다 넣은 것이 null이 아니면 temp에다가 값을 직업넣고 개행을해준다.?
+                while ((temp = bufferedReader.readLine()) != null)
+                {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return  stringBuilder.toString().trim();
+
+            }catch (Exception e){
+
+            }
+            return null;
+        }
+
+        //데이터가 만개 있는데 중간에 한번 실행되는 메소드
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        //해당 결과를 처리 할 수 있는 메소드..
+        //데이터를 전부 다 받아온 후에 실행되는 메소드
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            try {
+                 //오류 검출용
+//                                AlertDialog dialog;
+//                AlertDialog.Builder builder = new AlertDialog.Builder(StatisticsFragment.this.getContext());
+//                dialog = builder.setMessage(result).setPositiveButton("확인",null).create();
+//                dialog.show();
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+                int size = jsonArray.length();
+                Log.i("사이즈",size+"");
+                int count = 0;
+                int courseID;
+                String courseGrade;
+                String courseTitle;
+                String courseProfessor;
+                int courseCredit;
+                int courseDivide;
+                int coursePersonnel;
+                String courseTime;
+
+                while (count < jsonArray.length())
+                {
+                    JSONObject object = jsonArray.getJSONObject(count);
+                    courseID = object.getInt("courseID");
+                    courseGrade = object.getString("courseGrade");
+                    courseTitle = object.getString("courseTitle");
+                    courseProfessor = object.getString("courseProfessor");
+                    courseCredit = object.getInt("courseCredit");
+                    courseDivide = object.getInt("courseDivide");
+                    coursePersonnel = object.getInt("coursePersonnel");
+                    courseTime = object.getString("courseTime");
+                    rankList.add(new Course(courseID, courseGrade, courseTitle, courseCredit,courseDivide,coursePersonnel, courseTime, courseProfessor));
+
+                    //adapter.notifyDataSetChanged();
+                    count++;
+
+                }
+
+                //특정한 강의 학과를 넣었을 떄 모든 강의리스트가 나올수있을지 확인
+//                AlertDialog dialog;
+//                AlertDialog.Builder builder = new AlertDialog.Builder(StatisticsFragment.this.getContext());
+//                dialog = builder.setMessage(result).setPositiveButton("확인",null).create();
+//                dialog.show();
+                //JSONObject jsonObject = new JSONObject(result);
+
+                //response에 각각의 공지사항 데이터가 담긴다.
+//                json_encode($arr);
+
+
+                rankListAdapter.notifyDataSetChanged();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
     }
 
     //메인쓰레드는 ui를 못건드리고 별도의 쓰레드를 이용한다?

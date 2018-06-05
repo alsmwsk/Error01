@@ -112,4 +112,14 @@
         <item>미술교육과</item>
         <item>체육교육과</item>
     </string-array>
+
+    <string-array name="rank">
+        <item>전체에서</item>
+        <item>우리과에서</item>
+        <item>남자선호도</item>
+        <item>여자선호도</item>
+        <item>전공 인기도</item>
+        <item>교양 인기도</item>
+
+    </string-array>
 </resources>
