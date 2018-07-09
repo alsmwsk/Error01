@@ -10,7 +10,7 @@ import java.util.Map;
  * Created by seowoo on 2018-04-26.
  */
 
-//php 파일로 데이터를 보낸다.
+//php 파일로 데이터를 보낸다...
 public class AddRequest extends StringRequest {
 
     final static private String URL = "http://alsmwsk3.dothome.co.kr/Android/CourseAdd.php";
